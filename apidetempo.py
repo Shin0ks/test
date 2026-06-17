@@ -1,16 +1,18 @@
-
 #Variaveis e bibliotecas
 
 import requests 
 import time 
 
-api = '5ee47719292a3f7b495c60fbbb266d2b'
+from dotenv import dotenv_values
+
+token = dotenv_values(".env")
+token = token["TOKEN"]
 
 cidade = input('DIGITE O NOME DA SUA CIDADE : ')
 
 #Aqui eu vou implementar o while true  ainda(caso digite errado ou algo do tipo) 
 
-link = f'https://api.openweathermap.org/data/2.5/weather?q={cidade}&appid={api}&lang=pt_br'
+link = f'https://api.openweathermap.org/data/2.5/weather?q={cidade}&appid={token}&lang=pt_br'
 
 #verificação 
 
