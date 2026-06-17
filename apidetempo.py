@@ -8,12 +8,15 @@ api = '5ee47719292a3f7b495c60fbbb266d2b'
 
 cidade = input('DIGITE O NOME DA SUA CIDADE : ')
 
+#Aqui eu vou implementar o while true  ainda(caso digite errado ou algo do tipo) 
+
 link = f'https://api.openweathermap.org/data/2.5/weather?q={cidade}&appid={api}&lang=pt_br'
 
-#Verificacao 
+#verificação 
 
 print('Verificando conexão...'), time.sleep(1.5)
 
+#condição 
 try:
 	teste_api = requests.head('https://api.openweathermap.org', timeout=5)
 	if teste_api.status_code >= 400 :
@@ -47,9 +50,11 @@ try :
                print(f'Umidade : {umid}')
                print('-' *15)
                
- #correcao
+ #correção 
  
 except Exception as erro:
     
     print(f"Ocorreu um erro inesperado {erro}")
-      
+
+#sometimes i dream of saving the world saving everyone from the invisible hand 🤖 
+     
