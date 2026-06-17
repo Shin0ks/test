@@ -1,62 +1,62 @@
-#Variaveis e bibliotecas
 
+#Variaveis e biblioteca
 import requests 
-import time 
-
+from time  import sleep
 from dotenv import dotenv_values
 
+#Chaves 
 token = dotenv_values(".env")
 token = token["TOKEN"]
 
-cidade = input('DIGITE O NOME DA SUA CIDADE : ')
-
-#Aqui eu vou implementar o while true  ainda(caso digite errado ou algo do tipo) 
-
-link = f'https://api.openweathermap.org/data/2.5/weather?q={cidade}&appid={token}&lang=pt_br'
-
-#verificação 
-
-print('Verificando conexão...'), time.sleep(1.5)
-
-#condição 
-try:
-	teste_api = requests.head('https://api.openweathermap.org', timeout=5)
-	if teste_api.status_code >= 400 :
-		print(f'Erro : (Status : {teste_api.status_code}).Tente novamente depois')
-		exit()
-except  requests.exceptions.Timeout:
-    print("Erro: O serviço de clima demorou muito para responder (Timeout).")
-    exit()
-except requests.exceptions.RequestException:
-    print("Erro: Não foi possível conectar à internet ou ao servidor de clima.")
-    exit()
-			
-#Teste e coleta 
-
-try :
-       req = requests.get(link)
-       req_dic = (req.json())
-       
-       if req_dic.get('cod') == '404' or  req_dic.get('cod') == '404':
-       	print('Cidade não encontrada, ou digite corretamente')
-       else : 
-               desc =                req_dic['weather'] [0] ['description']
-               temp = req_dic['main'] ['temp'] -273.15
-               umid = req_dic['main'] ['humidity']
-               
- #saida   
-               print('-' *15)
-               print(f'Cidade: {cidade.title()}')
-               print(f'Clima: {desc.capitalize()}')
-               print(f'Temperatura: {temp:.1f}°C')
-               print(f'Umidade : {umid}')
-               print('-' *15)
-               
- #correção 
- 
-except Exception as erro:
+#Loop 
+while True:
+    cidade = input('Digite o nome da sua cidade: ')
     
-    print(f"Ocorreu um erro inesperado {erro}")
+    link = f'https://api.openweathermap.org/data/2.5/weather?q={cidade}&appid={token}&lang=pt_br'
+    
+ #Teste com o servidor     
+    print('Verificando conexão...',sleep(1))
 
-#sometimes i dream of saving the world saving everyone from the invisible hand 🤖 
-     
+    try:
+        teste_api = requests.head('https://api.openweathermap.org', timeout=5)
+        if teste_api.status_code >= 400:
+            print(f'Erro no servidor (Status : {teste_api.status_code}')
+            continue 
+            
+    except requests.exceptions.Timeout:
+        print("Erro: O serviço de clima demorou  (Timeout). Tente novamente.")      
+        continue
+       
+#Usuario sem conexão
+    except requests.exceptions.RequestException:
+        print('Erro: Não foi possível conectar à internet')
+        break       
+
+#Teste de conexão
+    try:
+        req = requests.get(link)
+        req_dic = req.json()
+
+        if str(req_dic.get('cod')) == '404':
+            print('Tente de novo')
+            continue 
+
+#coleta dos dados         
+        else: 
+            desc = req_dic['weather'][0]['description']
+            temp = req_dic['main']['temp'] - 273.15
+            umid = req_dic['main']['humidity']
+                   
+#Como vai aparecer 
+            print('-' * 25)
+            print(f'Cidade: {cidade.title()}')
+            print(f'Clima: {desc.capitalize()}')
+            print(f'Temperatura: {temp:.1f}°C')
+            print(f'Umidade: {umid}%')
+            print('-' * 25)
+            break
+                   
+#Tratar os erros               
+    except Exception as erro:
+        print(f'Ocorreu um erro: {erro}')
+        
