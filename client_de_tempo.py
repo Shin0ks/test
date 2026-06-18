@@ -15,7 +15,7 @@ while True:
     link = f'https://api.openweathermap.org/data/2.5/weather?q={cidade}&appid={token}&lang=pt_br'
     
  #Teste com o servidor     
-    print('Verificando conexão...',sleep(1))
+    print('Verificando conexão...') 
 
     try:
         teste_api = requests.head('https://api.openweathermap.org', timeout=5)
